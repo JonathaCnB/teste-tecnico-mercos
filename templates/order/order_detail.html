@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Pedido{% endblock title %}
+
+{% block content %}
+
+<div class="container my-3 table-responsive">
+    <h1 class="font-weight-bold">Pedidos</h1>
+    {% if order %}
+    <table class="table">
+        <thead>
+            <tr class="bg-light">
+                <th scope="col">Produto</th>
+                <th scope="col">Qauantidade</th>
+                <th scope="col">Preço Unitário</th>
+                <th scope="col">Preço Total</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order %}
+            {% with product=item.product %}
+            <tr>
+                <td class="align-middle">
+                    <a target="_blank" class="text-decoration-none" href="{{ product.get_absolute_url }}">
+                        {{ product.name }}
+                    </a>
+                </td>
+                <td class="align-middle">
+                    <form action="{% url 'order:add' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="col">
+                                {% render_field item.update_quantity_form.quantity class+="form-control" %}
+                            </div>
+                            <div class="col">
+                                <input type="submit" class="btn btn-info" value="Atualizar">
+                            </div>
+                        </div>
+                        {{ item.update_quantity_form.override }}
+                    </form>
+                </td>
+                <td class="align-middle"> {{ item.price }} </td>
+                <td class="align-middle"> {{ item.total_price }} </td>
+                <td class="align-middle text-right">
+                    <form action="{% url 'order:remove' product.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Remover">
+                    </form>
+                </td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+            <tr class="bg-light">
+                <td class="font-weight-bold">Total</td>
+                <td></td>
+                <td></td>
+                <td class="font-weight-bold">R$ {{ order.get_total_price }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <p>Sem pedidos no momento</p>
+    {% endif %}
+    <p class="text-right">
+        <a class="btn btn-primary" href="{% url 'products:list' %}">
+            Adicinar mais itens ao pedido
+        </a>
+        <a class="btn btn-success {% if not order %}disabled{% endif %}" href="#">
+            Finalizar pedido
+        </a>
+    </p>
+</div>
+
+{% endblock content %}
