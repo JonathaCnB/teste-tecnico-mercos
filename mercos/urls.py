@@ -9,6 +9,8 @@ urlpatterns = [
     path("", include("pages.urls")),
     # Direcionamento para pagina produtos
     path("products/", include("products.urls")),
+    # Direcionamento para pagina pedidos
+    path("order/", include("order.urls")),
 ]
 
 #  configuração para servir os arquivos de midia localmente
