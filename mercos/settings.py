@@ -16,6 +16,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # apps django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -23,10 +24,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd party
+    "widget_tweaks",
     # local apps
     "users.apps.UsersConfig",
     "pages.apps.PagesConfig",
     "products.apps.ProductsConfig",
+    "order.apps.OrderConfig",
 ]
 
 MIDDLEWARE = [
